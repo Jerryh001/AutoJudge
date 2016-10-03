@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 		bWorking = finder.FindNextFile();
 		filename = CT2A(finder.GetFileName());
 		cout << filename << endl;
-		if (0&&Compile(filename))
+		if (Compile(filename))
 		{
 			cout << "Compile Error" << endl;
 			continue;
@@ -25,7 +25,14 @@ int main(int argc, char* argv[])
 		SHELLEXECUTEINFO info = { sizeof(SHELLEXECUTEINFO) ,SEE_MASK_NOCLOSEPROCESS ,NULL,TEXT("open"),TEXT("cmd"),TEXT("/c a > output.txt"),NULL ,SW_HIDE };
 		ShellExecuteEx(&info);
 		Sleep(1000);
-		system(("taskkill /F /PID " + to_string(GetProcessId(info.hProcess))).c_str());
+		if (system(("taskkill  /F /T /PID " + to_string(GetProcessId(info.hProcess))+" >nul 2> nul").c_str()))
+		{
+			cout << "fine" << endl;
+		}
+		else
+		{
+			cout << "Time Limit Exceeded" << endl;
+		}
 	}
 	return EXIT_SUCCESS;
 }
