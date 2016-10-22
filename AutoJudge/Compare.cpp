@@ -8,7 +8,7 @@
 bool Compare(const string& infilename)
 {
 	ifstream user(".\\temp\\output.txt");
-	ifstream ans(".\\temp\\" + infilename);
+	ifstream ans(".\\output\\" + infilename);
 	string userstr, ansstr;
 	while (1)
 	{
@@ -16,11 +16,11 @@ bool Compare(const string& infilename)
 		getline(ans, ansstr);
 		if (user.eof() != ans.eof() || userstr != ansstr)
 		{
-			return 0;
+			return false;
 		}
 		if (user.eof())
 		{
-			return 1;
+			return true;
 		}
 	}
 }
