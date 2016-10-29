@@ -7,8 +7,8 @@
 #include"Header.h"
 bool Compare(const string& infilename)
 {
-	ifstream user(".\\temp\\output.txt");
-	ifstream ans(".\\output\\" + infilename);
+	ifstream user(R"(.\temp\output.txt)");
+	ifstream ans(R"(.\output\)" + infilename);
 	string userstr, ansstr;
 	while (1)
 	{

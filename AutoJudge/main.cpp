@@ -17,13 +17,6 @@ bool GetColor(WORD &ret) {
 	ret = info.wAttributes;
 	return true;
 }
-long __stdcall callback(_EXCEPTION_POINTERS* excp)
-{
-	printf("Error   address   %x/n", excp->ExceptionRecord->ExceptionAddress);
-	printf("CPU   register:/n");
-	printf("eax   %x   ebx   %x   ecx   %x   edx   %x/n", excp->ContextRecord->Eax, excp->ContextRecord->Ebx, excp->ContextRecord->Ecx, excp->ContextRecord->Edx);
-	return EXCEPTION_EXECUTE_HANDLER;
-}
 void ShowMessageYes(const string& message)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_GREEN);
@@ -39,20 +32,21 @@ void ShowMessageNo(const string& message)
 int main(int argc, char* argv[])
 {
 	string filename, infilename;
-	CFileFind finder, infinder;
-	BOOL bWorking = finder.FindFile(_T("*.cpp"));
+	CFileFind codefinder, infinder;
+	BOOL bWorking = codefinder.FindFile(TEXT("*.cpp"));
 	GetColor(defaultcolor);
+	system("md temp >nul 2>nul");
 	while (bWorking)
 	{
-		bWorking = finder.FindNextFile();
-		filename = CT2A(finder.GetFileName());
+		bWorking = codefinder.FindNextFile();
+		filename = CT2A(codefinder.GetFileName());
 		cout << filename << endl;
 		if (Compile(filename))
 		{
 			ShowMessageNo("Compile Error");
 			continue;
 		}
-		BOOL infile = infinder.FindFile(TEXT(".\\input\\*.*"));
+		BOOL infile = infinder.FindFile(TEXT(R"(.\input\*.*)"));
 		DWORD exitCode;
 		bool AC = true;
 		while (infile&&AC)
@@ -60,9 +54,9 @@ int main(int argc, char* argv[])
 			infile = infinder.FindNextFile();
 			if (infinder.IsDots() || infinder.IsDirectory()) continue;
 			infilename = CT2A(infinder.GetFileName());
-			CA2T parameter = ("/c a > .\\temp\\output.txt < .\\input\\" + infilename).c_str();
-			SHELLEXECUTEINFO info = { sizeof(SHELLEXECUTEINFO) ,SEE_MASK_NOCLOSEPROCESS ,NULL,TEXT("open"),TEXT("cmd"),parameter,NULL ,SW_HIDE };
-			system("del temp\\*.* /Q");
+			CA2T parameter = (R"( /c a.exe > .\temp\output.txt < .\input\)" + infilename).c_str();
+			SHELLEXECUTEINFO info = { sizeof(SHELLEXECUTEINFO) ,SEE_MASK_NOCLOSEPROCESS ,NULL,TEXT("open"),TEXT("cmd"),parameter,NULL ,SW_SHOW };
+			system(R"(del .\temp\*.* /Q >nul 2>nul)");
 			ShellExecuteEx(&info);
 			switch (WaitForSingleObject(info.hProcess, 1000))
 			{
@@ -83,6 +77,9 @@ int main(int argc, char* argv[])
 					AC = false;
 					ShowMessageNo("Runtime Error");
 				}
+				break;
+			default:
+				cout << "WTF" << endl;
 				break;
 			}
 			if (AC && !Compare(infilename))
