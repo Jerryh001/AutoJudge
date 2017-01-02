@@ -5,22 +5,22 @@
 #include<string>
 #include<afx.h>
 #include"Header.h"
-bool Compare(const string& infilename)
+int Compare(const string& infilename)
 {
-	ifstream user(R"(.\temp\output.txt)");
+	ifstream user(R"(.\temp\)"+ infilename);
 	ifstream ans(R"(.\output\)" + infilename);
 	string userstr, ansstr;
-	while (1)
+	for (int line=1;;line++)
 	{
 		getline(user, userstr);
 		getline(ans, ansstr);
 		if (user.eof() != ans.eof() || userstr != ansstr)
 		{
-			return false;
+			return line;
 		}
 		if (user.eof())
 		{
-			return true;
+			return 0;
 		}
 	}
 }
