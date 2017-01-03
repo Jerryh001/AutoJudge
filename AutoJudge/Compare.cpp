@@ -7,7 +7,7 @@
 #include"Header.h"
 int Compare(const string& infilename)
 {
-	ifstream user(R"(.\temp\)"+ infilename);
+	ifstream user(R"(.\AJ_temp\)"+ infilename);
 	ifstream ans(R"(.\output\)" + infilename);
 	string userstr, ansstr;
 	for (int line=1;;line++)

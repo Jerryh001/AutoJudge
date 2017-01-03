@@ -148,9 +148,11 @@
   <ItemGroup>
     <ClCompile Include="Compare.cpp" />
     <ClCompile Include="Compile.cpp" />
+    <ClCompile Include="Config.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Config.h" />
     <ClInclude Include="Header.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

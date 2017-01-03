@@ -5,8 +5,10 @@
 using namespace std;
 int Compile(const string& filename)
 {
-	string GppPath = R"("C:\Program Files (x86)\CodeBlocks\MinGW\bin\g++.exe")";
-	string CompileOption = R"( -Wall -O2 -o a.exe > nul )";
-	string CompileCommend = R"(")" + GppPath + R"( .\)" + filename + " " + CompileOption + R"(")";
+	string GppPath = Config::GetData("compiler");
+	string CompileOption = R"( -Wall -O2 -o .\AJ_temp\a.exe >nul )";
+	string CompileCommend = R"(cmd /C "set "PATH=)"+ GppPath +R"(;%PATH%" && g++ ".\)" + filename + R"(" )" + CompileOption + R"(")";
+	cout << CompileCommend << endl;
 	return system(CompileCommend.c_str());
+	
 }
