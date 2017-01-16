@@ -1,14 +1,5 @@
-#ifndef _AFXDLL
-#define _AFXDLL
-#endif
-#include<cstdlib>
-#include<string>
-#include<iostream>
-#include<fstream>
-#include<afx.h>
-#include<shellapi.h>
-#include<Windows.h>
-#include"Header.h"
+
+#include"stdafx.h"
 using namespace std;
 WORD defaultcolor;
 SECURITY_ATTRIBUTES sa = { sizeof(sa) ,NULL,TRUE };
