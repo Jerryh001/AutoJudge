@@ -1,8 +1,4 @@
-#include"Header.h"
-#include<cstdlib>
-#include<string>
-#include<iostream>
-using namespace std;
+#include"stdafx.h"
 int Compile(const string& filename)
 {
 	string GppPath = Config::GetData("compiler");

@@ -134,21 +134,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AJFile.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="Problem.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="SimpleIni.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="SubmitObject.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TestCase.h" />
+    <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AJFile.cpp" />
     <ClCompile Include="AutoJudge.cpp" />
     <ClCompile Include="Compare.cpp" />
     <ClCompile Include="Compile.cpp" />
     <ClCompile Include="Config.cpp" />
+    <ClCompile Include="Problem.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SubmitObject.cpp" />
+    <ClCompile Include="TestCase.cpp" />
+    <ClCompile Include="UI.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="AutoJudge.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

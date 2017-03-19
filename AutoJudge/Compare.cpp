@@ -1,10 +1,4 @@
-#ifndef _AFXDLL
-#define _AFXDLL
-#endif
-#include<fstream>
-#include<string>
-#include<afx.h>
-#include"Header.h"
+#include"stdafx.h"
 int Compare(const string& infilename)
 {
 	ifstream user(R"(.\AJ_temp\)"+ infilename);
