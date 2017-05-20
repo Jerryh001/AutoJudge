@@ -13,11 +13,9 @@ SubmitObject::~SubmitObject()
 }
 
 
-void SubmitObject::SetResult(const TestCase& t,const JudgeResult& j)
+void SubmitObject::AddTestedCase(const TestCase& t)
 {
-	testedcase[t]= j;
-	UpdateResult();
-	//result = j;
+	testedcase.push_back(t);
 }
 
 void SubmitObject::SetFinalResult(const JudgeResult & j)
@@ -27,21 +25,52 @@ void SubmitObject::SetFinalResult(const JudgeResult & j)
 
 JudgeResult SubmitObject::GetFinalReault()
 {
-	UpdateResult();
+	if (result == NJ)
+	{
+		UpdateResult();
+	}
 	return result;
+}
+
+const vector<TestCase>& SubmitObject::GetTestedCase()
+{
+	return testedcase;
 }
 
 void SubmitObject::UpdateResult()
 {
-	if (result == NJ&&testedcase.size()>0)
+	if (testedcase.empty())
 	{
-		result = AC;
-		for (auto t : testedcase)
+		result = NJ;
+		return;
+	}
+	for (auto t : testedcase)
+	{
+		for (auto s : t.GetResultVector())
 		{
-			if (t.second != AC)
+			if (s != AC)
 			{
-				result = t.second;
+				result = s;
+				return;
 			}
 		}
 	}
+	result = AC;
+	return;
+}
+
+int SubmitObject::GetACCount()
+{
+	int ans = 0;
+	for (TestCase& t :testedcase)
+	{
+		for (JudgeResult r : t.GetResultVector())
+		{
+			if (r == AC)
+			{
+				ans++;
+			}
+		}
+	}
+	return ans;
 }

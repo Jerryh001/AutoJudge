@@ -1,8 +1,9 @@
 #pragma once
 #include"stdafx.h"
+using namespace std;
 enum FileType
 {
-	Code, Header
+	Code, Header, Setting
 };
 class AJFile
 {
@@ -15,6 +16,7 @@ class AJFile
 	AJFile();
 	AJFile(const CFileFind& find);
 	AJFile(const AJFile& aj);
+	AJFile(const string& folder, const string& name, const FileType& type = Setting);
 	AJFile& operator=(const AJFile& aj);
 	~AJFile();
 

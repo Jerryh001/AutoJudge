@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "AJFile.h"
-
+using namespace std;
 
 AJFile::AJFile()
 {
@@ -15,6 +15,13 @@ AJFile::AJFile(const CFileFind & find)
 AJFile::AJFile(const AJFile & aj)
 {
 	*this=aj;
+}
+
+AJFile::AJFile(const string & folder, const string & name, const FileType & type)
+{
+	filename = name;
+	filepath = folder+ name;
+	filetype = type;
 }
 
 AJFile & AJFile::operator=(const AJFile & aj)

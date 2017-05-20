@@ -4,8 +4,19 @@
 namespace UI
 {
 	WORD defaultcolor;
-	SECURITY_ATTRIBUTES sa = { sizeof(sa) ,NULL,TRUE };
-	bool AC_ = true;
+	void Init()
+	{
+		//DisableClose();
+		GetColor();
+	}
+	void DisableClose()
+	{
+		EnableMenuItem(GetSystemMenu(GetConsoleWindow(), FALSE), SC_CLOSE, MF_GRAYED);
+	}
+	void EnableClose()
+	{
+		EnableMenuItem(GetSystemMenu(GetConsoleWindow(), FALSE), SC_CLOSE, MF_ENABLED);
+	}
 	void GetColor() {
 		CONSOLE_SCREEN_BUFFER_INFO info;
 		GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
@@ -17,18 +28,10 @@ namespace UI
 		cout << message << endl << endl;
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), defaultcolor);
 	}
-	void ShowMessageNo(const string& message, const string& testcase)
+	void ShowMessageNo(const string& message)
 	{
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
-		if (testcase == "")
-		{
-			cout << message << endl << endl;
-		}
-		else
-		{
-			cout << message + " ( TestCase : " + testcase + " )" << endl << endl;
-		}
+		cout << message << endl << endl;
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), defaultcolor);
-		AC_ = false;
 	}
 };

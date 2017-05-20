@@ -1,25 +1,39 @@
 #include "Config.h"
 #include"stdafx.h"
 using namespace std;
-map<string, string> Config::data;
-void Config::Init()
+Config Config::globalsetting;
+Config::Config(const string & folder):AJFile(folder,"config.ini", FileType::Setting)
 {
-	if (!ReadFile())
+	bool ret = ReadFile();
+	if (folder == R"(.\)" && !ret)///isglobalsetting && not exist config.ini
 	{
 		WriteDefaultToFile();
 		ReadFile();
 	}
 }
-string Config::GetData(const string& i)
+const string& Config::GetData(const string& segment, const string& key,const string& defaultvalue)
 {
-	return Config::data[i];
+	string& d = data[segment][key];
+	if (d.empty())
+	{
+		string& gd = GetDataGlobal(segment,key);
+		if (gd.empty())
+		{
+			return defaultvalue;
+		}
+		return gd;
+	}
+	return d;
 }
-
+string& Config::GetDataGlobal(const string& segment, const string& key)
+{
+	return globalsetting.data[segment][key];
+}
 bool Config::ReadFile()
 {
 	CSimpleIniA ini;
 	string input;
-	if (ini.LoadFile("config.ini")<0)
+	if (ini.LoadFile(Path.c_str())<0)
 	{
 		return false;
 	}
@@ -27,11 +41,14 @@ bool Config::ReadFile()
 	ini.GetAllSections(sections);
 	for (const auto& s : sections)
 	{
+		map<string, string> sdata;
 		ini.GetAllKeys(s.pItem, keys);
 		for (const auto& k : keys)
 		{
-			data[k.pItem] = ini.GetValue(s.pItem,k.pItem);
+			sdata[k.pItem] = ini.GetValue(s.pItem, k.pItem);
+			//data[k.pItem] = ini.GetValue(s.pItem,k.pItem);
 		}
+		data[s.pItem] = move(sdata);
 	}
 	return true;
 }
@@ -39,10 +56,27 @@ bool Config::ReadFile()
 void Config::WriteDefaultToFile()
 {
 	ofstream out("config.ini");
-	out <<R"([INFO])"<<endl
-		<< R"(compiler=C:\Program Files (x86)\CodeBlocks\MinGW\bin)" << endl
-		<< R"(time=1000)" << endl
-		<< R"(headermode=0)" << endl
-		<< R"(header=header.h)" << endl;
+	out << R"([GENERAL])" << endl
+		<< R"(mode = 0		;0 = code, 1 = header)" << endl
+		<< R"(cleanup = 0)" << endl
+		<< R"([CODE])" << endl
+		<< R"(coderegex = (\.cpp)$)" << endl
+		<< R"([HEADER])" << endl
+		<< R"(headerregex = (\.h)$)" << endl
+		<< R"(main = main.cpp)" << endl
+		<< R"(include = header.h)" << endl
+		<< R"([COMPILE])" << endl
+		<< R"(path = C:\Program Files(x86)\CodeBlocks\MinGW\bin)" << endl
+		<< R"(options = )" << endl
+		<< R"([LIMIT])" << endl
+		<< R"(time = 3000)" << endl
+		<< R"(memory = 32)" << endl
+		<< R"([SCORE])" << endl
+		<< R"(part-score = 0)" << endl
+		<< R"([SEGMENT])" << endl
+		<< R"(segment-score = 0)" << endl
+		<< R"(token = )" << endl;
 	out.close();
 }
+
+

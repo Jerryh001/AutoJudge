@@ -9,13 +9,16 @@ enum JudgeResult
 class SubmitObject:public AJFile
 {
 	JudgeResult result;
-	map<TestCase, JudgeResult> testedcase;
+	vector<TestCase> testedcase;
 	public:
 	SubmitObject(const CFileFind& find, const FileType& type = Code);
 	~SubmitObject();
-	void SetResult(const TestCase&,const JudgeResult&);
+	//void SetResult(const TestCase&,const JudgeResult&);
+	void AddTestedCase(const TestCase&);
 	void SetFinalResult(const JudgeResult&);
 	JudgeResult GetFinalReault();
+	const vector<TestCase>& GetTestedCase();
 	void UpdateResult();
+	int GetACCount();
 };
 

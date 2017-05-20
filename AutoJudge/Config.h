@@ -1,14 +1,16 @@
 #pragma once
-#include<map>
-#include<string>
+#include"stdafx.h"
+#include"AJFile.h"
 using namespace std;
-class Config
+class Config:protected AJFile 
 {
 public:
-	static void Init();
-	static string GetData(const string& i);
+	Config(const string& folder=R"(.\)");
+	const string& GetData(const string& segment, const string& key,const string& defaultvalue="");
 private:
-	static map<string, string> data;
-	static bool ReadFile();
-	static void WriteDefaultToFile();
+	map<string, map<string,string>> data;
+	static Config globalsetting;
+	bool ReadFile();
+	void WriteDefaultToFile();
+	string& GetDataGlobal(const string& segment,const string& key);
 };
