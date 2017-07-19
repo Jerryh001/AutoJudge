@@ -7,7 +7,7 @@ class Problem
 {
 	vector<SubmitObject> submitarray;
 	vector<TestCase> testarray;
-	string path;
+	CString path;
 	FileType type;
 	AJFile mainfile;
 	bool partscore;
@@ -16,17 +16,18 @@ class Problem
 	int Compile(const SubmitObject& s);
 	JudgeResult Execute(SubmitObject& s, TestCase t);
 
-	unsigned int Compare(SubmitObject&, TestCase&);
-	bool IsOnSegmentEnd(const istream& in, const string& str, const string& token);
+	bool IsOnSegmentEnd(const istream& in, const CString& str, const CString& token);
 	void CopySubmitFile(const SubmitObject&);
 	void MoveSubmitFile(const SubmitObject&);
 	void CopyMainFile();
-	//void GetTargetName();
 public:
-	Problem(const string& folder=R"(.\)", const bool& part=false);
-	void ReadFile(const string& main = "main.cpp", string codereg = "", const string& casereg = R"([\s\S])");
-	~Problem();
+	Problem(const CString& folder=R"(.\)");
+	void ReadFile(const CString& casereg = R"([\s\S])");
 	void Judge();
+	CString GetPath()const;
+	void SetSetting(const CString& path);
+	static void SetGlobalSetting(const CString& path);
+	void AutoJudge();
 	
 	
 };

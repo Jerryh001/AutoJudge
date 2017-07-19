@@ -6,38 +6,48 @@ AJFile::AJFile()
 {
 }
 
-AJFile::AJFile(const CFileFind & find)
+AJFile::AJFile(const CString & path,const FileType& type)
 {
-	filename = CT2CA(find.GetFileName());
-	filepath = CT2CA(find.GetFilePath());
+	filepath = path;
+	filetype = type;
+	SetFilePath(filepath);
 }
 
-AJFile::AJFile(const AJFile & aj)
+AJFile::AJFile(const AJFile& file)
 {
-	*this=aj;
+	filepath = file.filepath;
+	filetype = file.filetype;
+	SetFilePath(file.GetFilePath());
 }
 
-AJFile::AJFile(const string & folder, const string & name, const FileType & type)
+void AJFile::SetFile(const CString & path, const FileType & type)
 {
-	filename = name;
-	filepath = folder+ name;
+	SetFilePath(path);
 	filetype = type;
 }
 
-AJFile & AJFile::operator=(const AJFile & aj)
+CString AJFile::GetFilePath()const
 {
-	filename = aj.filename;
-	filepath = aj.filepath;
-	filetype = aj.filetype;
-	return *this;
+	return CFile::GetFilePath();
 }
 
-
-AJFile::~AJFile()
+CString AJFile::GetFileName()const
 {
+	return  CFile::GetFileName();
 }
+
+FileType AJFile::GetFileType()const
+{
+	return filetype;
+}
+
+CString AJFile::GetFileTitle() const
+{
+	return CFile::GetFileTitle();
+}
+
 
 bool operator<(const AJFile& a, const AJFile& b)
 {
-	return a.filename<b.filename;
+	return a.GetFileTitle()<b.GetFileTitle();
 }

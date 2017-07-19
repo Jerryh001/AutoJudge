@@ -4,6 +4,7 @@
 namespace UI
 {
 	WORD defaultcolor;
+	WORD defaultback;
 	void Init()
 	{
 		//DisableClose();
@@ -21,17 +22,18 @@ namespace UI
 		CONSOLE_SCREEN_BUFFER_INFO info;
 		GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
 		defaultcolor = info.wAttributes;
+		defaultback = defaultcolor&(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY);
 	}
-	void ShowMessageYes(const string& message)
+	void ShowMessageYes(const CString& message)
 	{
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_GREEN);
-		cout << message << endl << endl;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_GREEN| defaultback);
+		cout << CT2CA(message) << endl << endl;
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), defaultcolor);
 	}
-	void ShowMessageNo(const string& message)
+	void ShowMessageNo(const CString& message)
 	{
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
-		cout << message << endl << endl;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED| defaultback);
+		cout << CT2CA(message) << endl << endl;
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), defaultcolor);
 	}
 };

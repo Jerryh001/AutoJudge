@@ -5,12 +5,14 @@ using namespace std;
 class Config:protected AJFile 
 {
 public:
-	Config(const string& folder=R"(.\)");
-	const string& GetData(const string& segment, const string& key,const string& defaultvalue="");
+	Config(const CString& path=R"(.\config.ini)");
+	const CString& GetData(const CString& segment, const CString& key,const CString& defaultvalue="");
+	void SetPath(const CString& path);
+	static void SetGlobalPath(const CString& path);
 private:
-	map<string, map<string,string>> data;
+	map<CString, map<CString,CString>> data;
 	static Config globalsetting;
 	bool ReadFile();
 	void WriteDefaultToFile();
-	string& GetDataGlobal(const string& segment,const string& key);
+	CString& GetDataGlobal(const CString& segment,const CString& key);
 };

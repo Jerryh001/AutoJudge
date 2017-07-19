@@ -3,26 +3,24 @@
 using namespace std;
 enum FileType
 {
-	Code, Header, Setting
+	Code, Header, Setting,Input,Output
 };
-class AJFile
+class AJFile:protected CFile
 {
 	protected:
 	
-	string filename;
-	string filepath;
+	//CString filename;
+	CString filepath;
 	FileType filetype;
 	public:
 	AJFile();
-	AJFile(const CFileFind& find);
-	AJFile(const AJFile& aj);
-	AJFile(const string& folder, const string& name, const FileType& type = Setting);
-	AJFile& operator=(const AJFile& aj);
-	~AJFile();
-
-	const string& Path = filepath;
-	const string& Name = filename;
-	const FileType& Type = filetype;
+	AJFile(const CString& file,const FileType& type);
+	AJFile(const AJFile& file);
+	void SetFile(const CString& file, const FileType& type);
+	CString GetFilePath()const;
+	CString GetFileName()const;
+	FileType GetFileType()const;
+	CString GetFileTitle()const;
 	friend bool operator< (const AJFile&, const AJFile&);
 };
 

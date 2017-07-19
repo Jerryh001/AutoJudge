@@ -75,6 +75,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -144,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="AJFile.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="OutputFile.h" />
     <ClInclude Include="Problem.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SimpleIni.h" />
@@ -157,6 +159,7 @@
     <ClCompile Include="AJFile.cpp" />
     <ClCompile Include="AutoJudge.cpp" />
     <ClCompile Include="Config.cpp" />
+    <ClCompile Include="OutputFile.cpp" />
     <ClCompile Include="Problem.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

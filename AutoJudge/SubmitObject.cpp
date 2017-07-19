@@ -3,15 +3,10 @@
 using namespace std;
 
 
-SubmitObject::SubmitObject(const CFileFind& find, const FileType & type):AJFile(find), result(NJ)
+SubmitObject::SubmitObject(const CString& path, const FileType & type):AJFile(path,type), result(NJ)
 {
 
 }
-
-SubmitObject::~SubmitObject()
-{
-}
-
 
 void SubmitObject::AddTestedCase(const TestCase& t)
 {
@@ -44,9 +39,9 @@ void SubmitObject::UpdateResult()
 		result = NJ;
 		return;
 	}
-	for (auto t : testedcase)
+	for (auto& t : testedcase)
 	{
-		for (auto s : t.GetResultVector())
+		for (auto& s : t.GetResultVector())
 		{
 			if (s != AC)
 			{
@@ -59,10 +54,10 @@ void SubmitObject::UpdateResult()
 	return;
 }
 
-int SubmitObject::GetACCount()
+int SubmitObject::GetACCount()const
 {
 	int ans = 0;
-	for (TestCase& t :testedcase)
+	for (const TestCase& t :testedcase)
 	{
 		for (JudgeResult r : t.GetResultVector())
 		{

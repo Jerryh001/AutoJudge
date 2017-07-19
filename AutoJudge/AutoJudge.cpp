@@ -1,29 +1,34 @@
 #include"stdafx.h"
 using namespace std;
 
-int main()
+int _tmain()
 {
 	UI::Init();
 	vector<Problem> problemlist;
+	Problem::SetGlobalSetting(R"(.\config.ini)");
 	CFileFind finder;
 	BOOL found = finder.FindFile(TEXT(R"(*.*)"));
 	while (found)
 	{
 		found = finder.FindNextFile();
-		if (finder.IsDirectory() && !finder.IsDots() && strcmp(CT2CA(finder.GetFileName()), "AJ_temp"))
+		if (finder.IsDirectory() && !finder.IsDots() && finder.GetFileName() != "AJ_temp")
 		{
-			problemlist.push_back(Problem(string(CT2CA(finder.GetFilePath())),true));
+			problemlist.push_back(Problem(finder.GetFilePath()));
 		}
 	}
-	system(R"(rmdir .\AJ_temp /Q /S >nul 2>nul)");
-	CreateDirectory(CA2CT("AJ_temp"),NULL);
-	//system(R"(mkdir AJ_temp  >nul 2>nul)");
-	//atexit([]() {system("taskkill /F /T /IM a.exe > nul 2> nul"); });
+	finder.Close();
+	_tsystem(TEXT(R"(rmdir .\AJ_temp /Q /S >nul 2>nul)"));
+	CreateDirectory(TEXT("AJ_temp"),NULL);
 	for (Problem& p : problemlist)
 	{
-		p.ReadFile();
-		p.Judge();
+		p.AutoJudge();
 	}
-	system("pause");
+	DWORD dwProcessId;
+	GetWindowThreadProcessId(GetConsoleWindow(), &dwProcessId);
+	if (GetCurrentProcessId() == dwProcessId)
+	{
+		_tsystem(TEXT("pause"));
+	}
+	
 	return 0;
 }
