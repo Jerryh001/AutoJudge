@@ -39,13 +39,13 @@
     <ClInclude Include="SimpleIni.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
     <ClInclude Include="UI.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="OutputFile.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>
@@ -77,5 +77,15 @@
     <ClCompile Include="OutputFile.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="AutoJudge.rc">
+      <Filter>資源檔</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="AutoJudge.ico">
+      <Filter>資源檔</Filter>
+    </Image>
   </ItemGroup>
 </Project>

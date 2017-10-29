@@ -21,6 +21,7 @@ int Problem::Compile(const SubmitObject & s)
 	}
 	CString CompileCommend = R"(cmd /C "set "PATH=)" + GppPath + R"(;%PATH%" && g++ )" + CompileOption + R"( ".\AJ_temp\)" + file + R"(" -o .\AJ_temp\a.exe -w")";
 	while (!DeleteFile(TEXT(R"(.\AJ_temp\a.exe)")) && (GetLastError() == ERROR_ACCESS_DENIED));
+	while (!DeleteFile(TEXT(R"(.\AJ_temp\a.exe)")) && (GetLastError() != ERROR_FILE_NOT_FOUND));
 	return _tsystem(CompileCommend);
 }
 Problem::Problem(const CString& folder) :path(folder + R"(\)"), config(path+R"(config.ini)")
@@ -190,25 +191,29 @@ JudgeResult Problem::Execute(SubmitObject& s, TestCase t)
 	PROCESS_INFORMATION pi;
 	DWORD exitcode = 0;
 	STARTUPINFO si = { sizeof(STARTUPINFO) };
-	limit.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE | JOB_OBJECT_LIMIT_PROCESS_MEMORY | JOB_OBJECT_LIMIT_PROCESS_TIME | JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION;
-	limit.ProcessMemoryLimit = memory * 1048576;///unit=MB
-	limit.BasicLimitInformation.PerProcessUserTimeLimit.QuadPart = time * 10000;
-	SetInformationJobObject(job, JobObjectExtendedLimitInformation, &limit, sizeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION));
+
 	si.dwFlags = STARTF_USESTDHANDLES;
 	si.hStdInput = CreateFile(t.GetFilePath(), GENERIC_READ, FILE_SHARE_READ, &sa, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	si.hStdOutput = CreateFile(TEXT(R"(.\AJ_temp\)" + t.GetFileName()), GENERIC_WRITE, FILE_SHARE_WRITE, &sa, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	limit.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE | JOB_OBJECT_LIMIT_PROCESS_MEMORY | JOB_OBJECT_LIMIT_JOB_TIME | JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION;
+	limit.ProcessMemoryLimit = memory * 1048576;///unit=MB
+	limit.BasicLimitInformation.PerJobUserTimeLimit.QuadPart = time * 10000;
+	SetInformationJobObject(job, JobObjectExtendedLimitInformation, &limit, sizeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION));
+
 	CreateProcess(TEXT(R"(.\AJ_temp\a.exe)"), NULL, NULL, NULL, TRUE, CREATE_BREAKAWAY_FROM_JOB | CREATE_NO_WINDOW | CREATE_SUSPENDED, NULL, NULL, &si, &pi);
 	AssignProcessToJobObject(job, pi.hProcess);
 	ResumeThread(pi.hThread);
 	CloseHandle(si.hStdInput);
 	CloseHandle(si.hStdOutput);
 	CloseHandle(pi.hThread);
+
 	switch (WaitForSingleObject(pi.hProcess, INFINITE))
 	{
 	case WAIT_OBJECT_0:
 		GetExitCodeProcess(pi.hProcess, &exitcode);
-		//cout << exitcode << endl;
-		if (exitcode == 0xC0000044)///should be ERROR_NOT_ENOUGH_QUOTA, not sure why
+		cout << exitcode << endl;
+		if (exitcode == 0xC0000044|| exitcode==ERROR_NOT_ENOUGH_QUOTA)///should be ERROR_NOT_ENOUGH_QUOTA, not sure why
 		{
 			t.AddResult(TLE);
 		}

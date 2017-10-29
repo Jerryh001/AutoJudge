@@ -82,21 +82,25 @@ JudgeResult TestCase::SegmentCompare(const list<CString>& ans, const list<CStrin
 		for (i=0; itans!=ans.end(); i++, ++itans)
 		{
 			CString ansstr = *itans;
-			while (ansstr.Trim().IsEmpty())
+			ansstr.Remove(' ');//TODO: not a good method
+			while (ansstr.IsEmpty())
 			{
 				if (++itans == ans.end()) goto endans;
 				ansstr = *itans;
+				ansstr.Remove(' ');//TODO: not a good method
 			}
 			ituser = user.begin();
 			for (j = 0;ituser!=user.end(); j++, ++ituser)
 			{
 				CString userstr = *ituser;
-				while (userstr.Trim().IsEmpty())
+				userstr.Remove(' ');//TODO: not a good method
+				while (userstr.IsEmpty())
 				{
 					if (++ituser == user.end()) goto enduser;
 					userstr = *ituser;
+					userstr.Remove(' ');//TODO: not a good method
 				}
-				if (ansstr.Trim() == userstr.Trim())
+				if (ansstr == userstr)
 				{
 					if (i == 0 || j == 0)
 					{
